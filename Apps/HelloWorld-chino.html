@@ -31,7 +31,7 @@
     <script>
         var viewer = new Cesium.viewer("cesiumContainer")
         var tileset1 = new Cesium.Cssium3DTileset({
-            url: './data/chino/tileset.json'
+            url: './chino3d/tileset.json'
         });
         tileset1.readyPromise.then(function(tileset1) {
             viewer.scene.primitves.add(tileset1);
