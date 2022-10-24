@@ -9,9 +9,9 @@
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     <title>Hello chino!</title>
-    <script src="../Build/Cesium/Cesium.js"></script>
+    <script src="../Build/CesiumUnminified/Cesium.js"></script>
     <style>
-        @import url(../Build/Cesium/Widgets/widgets.css);
+        @import url(../Build/CesiumUnminified//Widgets/widgets.css);
 
         html,
         body,
@@ -22,19 +22,19 @@
             padding: 0;
             overflow: hidden;
         }
-
     </style>
 </head>
 
 <body>
     <div id="cesiumContainer"></div>
     <script>
-        var viewer = new Cesium.viewer("cesiumContainer")
-        var tileset1 = new Cesium.Cssium3DTileset({
+        const viewer = new Cesium.Viewer("cesiumContainer");
+
+        const tileset1 = new Cesium.Cesium3DTileset({
             url: './chino3d/tileset.json'
         });
         tileset1.readyPromise.then(function(tileset1) {
-            viewer.scene.primitves.add(tileset1);
+            viewer.scene.primitives.add(tileset1);
             tileset1.style = new Cesium.Cesium3DTileStyle({
                 color: 'rgb(255,0,0)',
                 markerSymbol: '?'
@@ -50,8 +50,5 @@
         }).otherwise(function(error) {
             console.log(error);
         });
-
     </script>
-</body>
-
-</html>
+</body></html>
