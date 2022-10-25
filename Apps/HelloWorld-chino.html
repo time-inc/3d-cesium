@@ -22,6 +22,7 @@
             padding: 0;
             overflow: hidden;
         }
+
     </style>
 </head>
 
@@ -60,24 +61,27 @@
             position: Cesium.Cartesian3.fromDegrees(138.2, 35.9, 10000)
         });
 
-        const tileset2 = new Cesium.Cesium3DTileset({
-            url: './chino3d/20214_chino-shi_2020_railway.json'
-        });
+
 
 
         const tileset1 = new Cesium.Cesium3DTileset({
             url: './chino3d/tileset.json'
         });
 
-
-
-
-
         tileset1.readyPromise.then(function(tileset1) {
             viewer.scene.primitives.add(tileset1);
             tileset1.style = new Cesium.Cesium3DTileStyle({
-                color: 'rgb(255,0,0)',
-                markerSymbol: '?'
+
+                color: {
+                    conditions: [
+                        ["Number(${地上階数}) >= 4", "rgb(255,0,0,0.5)"],
+                        ["Number(${地上階数}) >= 3", "rgb(0,255,0,0.5)"],
+                        ["Number(${地上階数}) >= 2", "rgb(0,0,255,0.5)"],
+                        ["true", "rgb(255,255,255)"]
+                    ]
+                },
+
+                markerSymbol: '?',
             });
 
             viewer.camera.flyTo({
@@ -91,5 +95,8 @@
         }).otherwise(function(error) {
             console.log(error);
         });
+
     </script>
-</body></html>
+</body>
+
+</html>
