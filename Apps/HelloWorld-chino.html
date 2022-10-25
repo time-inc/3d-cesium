@@ -69,17 +69,18 @@
             url: './chino3d/tileset.json'
         });
 
-        const tileset2 = new Cesium.Cesium3DTileset({
-            url: './chino3d-2/tileset.json'
-        });
-
-
         tileset1.readyPromise.then(function(tileset1) {
             viewer.scene.primitives.add(tileset1);
             tileset1.style = new Cesium.Cesium3DTileStyle({
-                color: 'rgb(255,0,0)',
+                color: 'rgb(0,0,0)',
                 markerSymbol: '?'
             });
+
+            const tileset2 = new Cesium.Cesium3DTileset({
+                url: './matumoto3d/tileset.json'
+            });
+
+
             viewer.camera.flyTo({
                 destination: Cesium.Cartesian3.fromDegrees(138.2, 35.9, 10000),
                 orientation: {
