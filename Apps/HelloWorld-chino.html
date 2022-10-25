@@ -28,8 +28,12 @@
 
 <body>
     <div id="cesiumContainer"></div>
+
     <script>
+        //            <!--  ↓Cesium地球儀表示 --!>
         const viewer = new Cesium.Viewer("cesiumContainer", {
+
+            //            <!--  ↓CesiumUI設定 --!>
             baseLayerPicker: true,
             timeline: false,
             animation: false,
@@ -39,10 +43,11 @@
             sceneModePicker: true,
             navigationHelpButton: true,
 
+            //            <!--  ↓ベースマップの変更_3D --!>
             terrainProvider: Cesium.createWorldTerrain()
-
         });
 
+        //            <!--  ↓ホームボタン設定_茅野市上空 --!>
         viewer.homeButton.viewModel.command.beforeExecute.addEventListener(
             function(e) {
                 e.cancel = true;
@@ -57,21 +62,17 @@
             }
         );
 
-        viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(138.2, 35.9, 10000)
-        });
-
-
-
-
+        //            <!--  ↓3DTile読込_PLATEAU (茅野市建物モデル) --!>
         const tileset1 = new Cesium.Cesium3DTileset({
             url: './chino3d/tileset.json'
         });
 
+        //            <!--  ↓3DTile表示設定 --!>
         tileset1.readyPromise.then(function(tileset1) {
             viewer.scene.primitives.add(tileset1);
-            tileset1.style = new Cesium.Cesium3DTileStyle({
 
+            //            <!--  ↓↓条件による色分け_地上階数 --!>
+            tileset1.style = new Cesium.Cesium3DTileStyle({
                 color: {
                     conditions: [
                         ["Number(${地上階数}) >= 4", "rgb(255,0,0,0.5)"],
@@ -80,19 +81,39 @@
                         ["true", "rgb(255,255,255)"]
                     ]
                 },
-
                 markerSymbol: '?',
-            });
+            })
+        });
 
-            viewer.camera.flyTo({
-                destination: Cesium.Cartesian3.fromDegrees(138.2, 35.9, 10000),
-                orientation: {
-                    heading: Cesium.Math.toRadians(0.0),
-                    pitch: Cesium.Math.toRadians(-45.0),
-                    roll: 0.0
-                }
-            });
-        }).otherwise(function(error) {
+        //            <!--  ↓3DTile読込_PLATEAU (洪水浸水想定区域) --!>   
+        const tileset2 = new Cesium.Cesium3DTileset({
+            url: './chino-sinsui/tileset.json'
+        });
+
+        tileset2.readyPromise.then(function(tileset2) {
+            viewer.scene.primitives.add(tileset2);
+
+            //            <!--  ↓↓条件による色分け_浸水ランク --!>
+            tileset2.style = new Cesium.Cesium3DTileStyle({
+                color: 'rgb(0,255,255)',
+                markerSymbol: '?',
+            })
+        });
+
+
+
+        //            <!--  ↓視点設定_茅野市上空  --!>
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(138.2, 35.9, 10000),
+            orientation: {
+                heading: Cesium.Math.toRadians(0.0),
+                pitch: Cesium.Math.toRadians(-45.0),
+                roll: 0.0
+            }
+        });
+
+        //            <!--  ↓エラー処理  --!>
+        otherwise(function(error) {
             console.log(error);
         });
 
